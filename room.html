@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Room | CartShare</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <header class="cs-topbar">
+    <div class="container py-3 d-flex flex-wrap align-items-center gap-3">
+      <a href="index.html" class="me-auto" aria-label="CartShare home"><img src="assets/logo.svg" alt="" class="cs-logo"></a>
+
+      <div class="code-chip">
+        <span class="text-muted-cs small">Room</span>
+        <span class="code" id="roomCode" aria-label="Room code"></span>
+        <button type="button" class="btn btn-outline-cs btn-sm" id="copyLinkBtn">Copy invite link</button>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="receipt.html" class="btn btn-cs btn-sm" id="receiptBtn">Receipt</a>
+        <button type="button" class="btn btn-outline-cs btn-sm" id="leaveBtn">Leave room</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-4">
+    <!-- Delivery meter -->
+    <section class="meter-card mb-4" id="meterCard" aria-labelledby="meterTitle">
+      <div class="d-flex flex-wrap align-items-end justify-content-between gap-2 mb-4">
+        <div>
+          <h1 class="meter-title" id="meterTitle">Loading</h1>
+          <p class="meter-sub" id="meterSub"></p>
+        </div>
+        <div class="text-end">
+          <button type="button" class="btn btn-link p-0" id="goalToggle" data-bs-toggle="collapse" data-bs-target="#goalCollapse" aria-expanded="false" aria-controls="goalCollapse">Change goal</button>
+        </div>
+      </div>
+
+      <div class="collapse mb-3" id="goalCollapse">
+        <form id="goalForm" class="row g-2 align-items-end" novalidate>
+          <div class="col-8 col-sm-5 col-md-3">
+            <label for="goalInput" class="form-label small mb-1">Free delivery above</label>
+            <input type="number" class="form-control" id="goalInput" min="1" step="0.01" required>
+          </div>
+          <div class="col-4 col-sm-auto">
+            <button type="submit" class="btn btn-light fw-semibold">Save goal</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="meter-wrap" style="margin-top:1.5rem">
+        <div class="meter-track" id="meterTrack" role="img" aria-label="Cart total compared with the free delivery goal"></div>
+        <div class="meter-goal" id="meterGoal" hidden></div>
+      </div>
+      <div class="meter-legend mt-3" id="meterLegend"></div>
+    </section>
+
+    <div class="row g-4">
+      <!-- Main column -->
+      <div class="col-lg-8">
+        <section class="panel mb-4" aria-labelledby="addTitle">
+          <h2 class="panel-title" id="addTitle">Add an item</h2>
+          <form id="addForm" class="row g-2 align-items-start" novalidate>
+            <div class="col-12 col-md-5">
+              <label for="itemName" class="form-label small mb-1">Item</label>
+              <input type="text" class="form-control" id="itemName" maxlength="60" autocomplete="off" required>
+              <div class="invalid-feedback">Enter an item name.</div>
+            </div>
+            <div class="col-6 col-md-3">
+              <label for="itemPrice" class="form-label small mb-1">Price each</label>
+              <input type="number" class="form-control" id="itemPrice" min="0" step="0.01" inputmode="decimal" required>
+              <div class="invalid-feedback">Enter a price (0 or more).</div>
+            </div>
+            <div class="col-6 col-md-2">
+              <label for="itemQty" class="form-label small mb-1">Qty</label>
+              <input type="number" class="form-control" id="itemQty" min="1" max="99" step="1" value="1" required>
+              <div class="invalid-feedback">1 to 99.</div>
+            </div>
+            <div class="col-12 col-md-2 d-grid" style="padding-top:1.5rem">
+              <button type="submit" class="btn btn-cs">Add</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel" aria-labelledby="cartTitle">
+          <div class="d-flex justify-content-between align-items-baseline">
+            <h2 class="panel-title" id="cartTitle">Shared cart</h2>
+            <span class="text-muted-cs small" id="cartCount"></span>
+          </div>
+          <ul class="cart-list" id="cartList" aria-live="polite"></ul>
+          <div class="d-flex justify-content-between align-items-baseline border-top pt-3 mt-2">
+            <span class="fw-semibold">Total</span>
+            <span class="fs-4 fw-bold display-font" id="cartTotal"></span>
+          </div>
+        </section>
+      </div>
+
+      <!-- Side column -->
+      <div class="col-lg-4">
+        <section class="panel mb-4" aria-labelledby="peopleTitle">
+          <h2 class="panel-title" id="peopleTitle">In this room</h2>
+          <div class="avatars mb-3" id="avatars"></div>
+          <h3 class="h6 fw-semibold mb-2">Who owes what</h3>
+          <div id="splitList"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="activityTitle">
+          <h2 class="panel-title" id="activityTitle">Activity</h2>
+          <ul class="activity-list" id="activityList" aria-live="polite"></ul>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="appToast" class="toast align-items-center text-bg-dark border-0" role="status" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastBody"></div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/room.js"></script>
+</body>
+</html>

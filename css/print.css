@@ -1,0 +1,46 @@
+/* Print rules: loaded with media="print" on receipt.html. Only the receipt paper is printed. */
+
+@page {
+  size: A4 portrait;
+  margin: 14mm;
+}
+
+@media print {
+  html, body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .no-print,
+  .cs-topbar,
+  .toast-container {
+    display: none !important;
+  }
+
+  .receipt-page { background: #fff !important; padding: 0 !important; }
+
+  .receipt-page .container { max-width: none !important; padding: 0 !important; }
+
+  .receipt-paper {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+    font-size: 11pt;
+    color: #000;
+  }
+
+  .receipt-paper .sub { color: #333; }
+
+  .receipt-paper tr,
+  .receipt-paper section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .receipt-paper thead { display: table-header-group; }
+
+  a { color: inherit; text-decoration: none; }
+}

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 48" role="img" aria-label="CartShare">
+  <rect x="0" y="4" width="40" height="40" rx="10" fill="#134E4A"/>
+  <path d="M8 16h5l4 17h15l4-12H18" fill="none" stroke="#FACC15" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="19" cy="38" r="2.6" fill="#fff"/>
+  <circle cx="31" cy="38" r="2.6" fill="#fff"/>
+  <text x="50" y="33" font-family="Bricolage Grotesque, Arial, sans-serif" font-size="26" font-weight="700" fill="#0E2A2B">CartShare</text>
+</svg>
